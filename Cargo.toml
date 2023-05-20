@@ -1,5 +1,5 @@
 [package]
-name = "PrintX509Cert"
+name = "print-x509-cert"
 version = "0.1.0"
 edition = "2021"
 
