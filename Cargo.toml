@@ -1,0 +1,15 @@
+[package]
+name = "PrintX509Cert"
+version = "0.1.0"
+edition = "2021"
+
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+openssl = "0.10.52"
+x509-certificate = "0.19.0"
+x509-parser = "0.15.0"
+regex = "1.8.1"
+chrono = { version = "0.4.24", features = [ 'serde' ] }
+serde = { version = "1.0.160", features = [ 'derive' ] }
