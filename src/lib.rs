@@ -850,7 +850,6 @@ impl PrintX509Cert {
                         println!("Subject Common Name: {}", cert.subject_common_name);
                         println!("Issuer Country: {}", cert.issuer_country);
                         println!("Issuer State: {}", cert.issuer_state);
-                        c
                         println!("Issuer Locality: {}", cert.issuer_locality);
                         println!("Issuer Organization: {}", cert.issuer_organization);
                         println!("Issuer Common Name: {}", cert.issuer_common_name);
