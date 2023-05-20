@@ -468,7 +468,7 @@ fn format_number_to_hex_with_colon(b: &[u8], row_size: usize) -> Vec<String> {
     v
 }
 
-fn handle_certificate(file_name: &str, data: &[u8]) -> io::Result<(Option<ServerCert>, Option<IntermediateCert>)> {
+fn handle_certificate(file_name: &str, data: &[u8]) -> io::Result<(Cert)> {
     let mut server_cert: Option<ServerCert> = None;
     let mut intermediate_cert: Option<IntermediateCert> = None;
 
@@ -755,7 +755,12 @@ fn handle_certificate(file_name: &str, data: &[u8]) -> io::Result<(Option<Server
                     extensions_subject_alternate_names: subject_alternative_name_str,
                 });
             }
-            Ok((server_cert, intermediate_cert))
+            let cert = Cert {
+                server: server_cert.unwrap(),
+                intermediate: intermediate_cert.unwrap(),
+            };
+
+            Ok(cert)
         }
         Err(e) => {
             let s = format!("Error while parsing {}: {}", file_name, e);
@@ -763,7 +768,12 @@ fn handle_certificate(file_name: &str, data: &[u8]) -> io::Result<(Option<Server
                 Err(io::Error::new(io::ErrorKind::Other, s))
             } else {
                 eprintln!("{}", s);
-                Ok((server_cert, intermediate_cert))
+                let cert = Cert {
+                    server: server_cert.unwrap(),
+                    intermediate: intermediate_cert.unwrap(),
+                };
+
+                Ok(cert)
             }
         }
     }
@@ -835,36 +845,34 @@ impl PrintX509Cert {
                         // Do something with the server certificate
                         // Access the fields of `cert` and perform necessary operations
 
-                    println!("Subject Country: {}", cert.subject_country);
-                    println!("Subject State: {}", cert.subject_state);
-                    println!("Subject Locality: {}", cert.subject_locality);
-                    println!("Subject Organization: {}", cert.subject_organization);
-                    println!("Subject Common Name: {}", cert.subject_common_name);
-                    println!("Issuer Country: {}", cert.issuer_country);
-                    println!("Issuer State: {}", cert.issuer_state);
-                    println!("Issuer Locality: {}", cert.issuer_locality);
-                    println!("Issuer Organization: {}", cert.issuer_organization);
-                    println!("Issuer Common Name: {}", cert.issuer_common_name);
-                    println!("Not Before: {}", cert.not_before);
-                    println!("Not After: {}", cert.not_after);
-                    println!("Is Valid: {}", cert.is_valid);
-                    println!("PKI Algorithm OID: {}", cert.pki_algorithm_oid);
-                    println!("PKI Algorithm Bytes: {}", cert.pki_algorithm_bytes);
-                    println!("PKI Algorithm Exponent: {}", cert.pki_algorithm_exponent);
-                    println!("Signature Algorithm: {}", cert.signature_algorithm);
-                    println!("Signature Value: {}", cert.signature_value);
-                    println!("Extensions authority key id: {}", cert.extensions_authority_key_identifier);
-                    println!("Extensions authority key cert issuer: {}", cert.extensions_authority_key_cert_issuer);
-                    println!("Extensions authority key cert serial: {}", cert.extensions_authority_key_cert_serial);
-                    println!("Extensions Basic Constraints: {}", cert.extensions_basic_constraints);
-                    println!("Extensions crl full name: {}", cert.extensions_crl_full_name);
-                    println!("Extensions crl reasons: {}", cert.extensions_crl_reasons);
-                    println!("Extensions crl issue: {}", cert.extensions_crl_issuer);
-                    println!("Extensions crl key usage: {}", cert.extensions_key_usage);
-                    println!("Extensions subject key identifier: {}", cert.extensions_subject_key_identifier);
-                    println!("Extensions SANS: {}", cert.extensions_subject_alternate_names);
-
-
+                        println!("Subject Country: {}", cert.subject_country);
+                        println!("Subject State: {}", cert.subject_state);
+                        println!("Subject Locality: {}", cert.subject_locality);
+                        println!("Subject Organization: {}", cert.subject_organization);
+                        println!("Subject Common Name: {}", cert.subject_common_name);
+                        println!("Issuer Country: {}", cert.issuer_country);
+                        println!("Issuer State: {}", cert.issuer_state);
+                        println!("Issuer Locality: {}", cert.issuer_locality);
+                        println!("Issuer Organization: {}", cert.issuer_organization);
+                        println!("Issuer Common Name: {}", cert.issuer_common_name);
+                        println!("Not Before: {}", cert.not_before);
+                        println!("Not After: {}", cert.not_after);
+                        println!("Is Valid: {}", cert.is_valid);
+                        println!("PKI Algorithm OID: {}", cert.pki_algorithm_oid);
+                        println!("PKI Algorithm Bytes: {}", cert.pki_algorithm_bytes);
+                        println!("PKI Algorithm Exponent: {}", cert.pki_algorithm_exponent);
+                        println!("Signature Algorithm: {}", cert.signature_algorithm);
+                        println!("Signature Value: {}", cert.signature_value);
+                        println!("Extensions authority key id: {}", cert.extensions_authority_key_identifier);
+                        println!("Extensions authority key cert issuer: {}", cert.extensions_authority_key_cert_issuer);
+                        println!("Extensions authority key cert serial: {}", cert.extensions_authority_key_cert_serial);
+                        println!("Extensions Basic Constraints: {}", cert.extensions_basic_constraints);
+                        println!("Extensions crl full name: {}", cert.extensions_crl_full_name);
+                        println!("Extensions crl reasons: {}", cert.extensions_crl_reasons);
+                        println!("Extensions crl issue: {}", cert.extensions_crl_issuer);
+                        println!("Extensions crl key usage: {}", cert.extensions_key_usage);
+                        println!("Extensions subject key identifier: {}", cert.extensions_subject_key_identifier);
+                        println!("Extensions SANS: {}", cert.extensions_subject_alternate_names);
                     }
                 }
                 Err(e) => {
@@ -888,36 +896,34 @@ impl PrintX509Cert {
                         // Do something with the intermediate certificate
                         // Access the fields of `cert` and perform necessary operations
 
-                    println!("Subject Country: {}", cert.subject_country);
-                    println!("Subject State: {}", cert.subject_state);
-                    println!("Subject Locality: {}", cert.subject_locality);
-                    println!("Subject Organization: {}", cert.subject_organization);
-                    println!("Subject Common Name: {}", cert.subject_common_name);
-                    println!("Issuer Country: {}", cert.issuer_country);
-                    println!("Issuer State: {}", cert.issuer_state);
-                    println!("Issuer Locality: {}", cert.issuer_locality);
-                    println!("Issuer Organization: {}", cert.issuer_organization);
-                    println!("Issuer Common Name: {}", cert.issuer_common_name);
-                    println!("Not Before: {}", cert.not_before);
-                    println!("Not After: {}", cert.not_after);
-                    println!("Is Valid: {}", cert.is_valid);
-                    println!("PKI Algorithm OID: {}", cert.pki_algorithm_oid);
-                    println!("PKI Algorithm Bytes: {}", cert.pki_algorithm_bytes);
-                    println!("PKI Algorithm Exponent: {}", cert.pki_algorithm_exponent);
-                    println!("Signature Algorithm: {}", cert.signature_algorithm);
-                    println!("Signature Value: {}", cert.signature_value);
-                    println!("Extensions authority key id: {}", cert.extensions_authority_key_identifier);
-                    println!("Extensions authority key cert issuer: {}", cert.extensions_authority_key_cert_issuer);
-                    println!("Extensions authority key cert serial: {}", cert.extensions_authority_key_cert_serial);
-                    println!("Extensions Basic Constraints: {}", cert.extensions_basic_constraints);
-                    println!("Extensions crl full name: {}", cert.extensions_crl_full_name);
-                    println!("Extensions crl reasons: {}", cert.extensions_crl_reasons);
-                    println!("Extensions crl issue: {}", cert.extensions_crl_issuer);
-                    println!("Extensions crl key usage: {}", cert.extensions_key_usage);
-                    println!("Extensions subject key identifier: {}", cert.extensions_subject_key_identifier);
-                    println!("Extensions SANS: {}", cert.extensions_subject_alternate_names);
-
-
+                        println!("Subject Country: {}", cert.subject_country);
+                        println!("Subject State: {}", cert.subject_state);
+                        println!("Subject Locality: {}", cert.subject_locality);
+                        println!("Subject Organization: {}", cert.subject_organization);
+                        println!("Subject Common Name: {}", cert.subject_common_name);
+                        println!("Issuer Country: {}", cert.issuer_country);
+                        println!("Issuer State: {}", cert.issuer_state);
+                        println!("Issuer Locality: {}", cert.issuer_locality);
+                        println!("Issuer Organization: {}", cert.issuer_organization);
+                        println!("Issuer Common Name: {}", cert.issuer_common_name);
+                        println!("Not Before: {}", cert.not_before);
+                        println!("Not After: {}", cert.not_after);
+                        println!("Is Valid: {}", cert.is_valid);
+                        println!("PKI Algorithm OID: {}", cert.pki_algorithm_oid);
+                        println!("PKI Algorithm Bytes: {}", cert.pki_algorithm_bytes);
+                        println!("PKI Algorithm Exponent: {}", cert.pki_algorithm_exponent);
+                        println!("Signature Algorithm: {}", cert.signature_algorithm);
+                        println!("Signature Value: {}", cert.signature_value);
+                        println!("Extensions authority key id: {}", cert.extensions_authority_key_identifier);
+                        println!("Extensions authority key cert issuer: {}", cert.extensions_authority_key_cert_issuer);
+                        println!("Extensions authority key cert serial: {}", cert.extensions_authority_key_cert_serial);
+                        println!("Extensions Basic Constraints: {}", cert.extensions_basic_constraints);
+                        println!("Extensions crl full name: {}", cert.extensions_crl_full_name);
+                        println!("Extensions crl reasons: {}", cert.extensions_crl_reasons);
+                        println!("Extensions crl issue: {}", cert.extensions_crl_issuer);
+                        println!("Extensions crl key usage: {}", cert.extensions_key_usage);
+                        println!("Extensions subject key identifier: {}", cert.extensions_subject_key_identifier);
+                        println!("Extensions SANS: {}", cert.extensions_subject_alternate_names);
                     }
                 }
                 Err(e) => {
