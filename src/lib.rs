@@ -822,6 +822,8 @@ impl  PrintX509Cert {
 
         //println!("Server Certificate :");
 
+        /*
+
         // Define the variables before the blocks
         let mut server_cert: ServerCert = ServerCert {
             subject_country: "".to_string(),
@@ -884,6 +886,8 @@ impl  PrintX509Cert {
             extensions_subject_alternate_names: "".to_string(),
         };
 
+         */
+
         let mut server_cert: Option<ServerCert> = None; // Initialize as None
 
 
@@ -894,9 +898,9 @@ impl  PrintX509Cert {
                 Ok(pem) => {
                     let data_server_cert_file_name = &pem.contents;
                     //println!("Certificate [{}]", n);
-                    let (cert, _) = handle_certificate(&server_cert_file_name, data_server_cert_file_name)?;
-                    if let Some(cert) = cert {
-                        server_cert = Option::from(cert); // Assign the value
+                    let (mut cert, _) = handle_certificate(&server_cert_file_name, data_server_cert_file_name)?;
+                    if let Some(cert) = cert.take() {
+                        server_cert = Some(cert); // Assign the value
                         // Do something with the server certificate
                         // Access the fields of `cert` and perform necessary operations
 
@@ -948,9 +952,9 @@ impl  PrintX509Cert {
                 Ok(pem) => {
                     let data_first_intermediate_cert_file_name = &pem.contents;
                     //println!("Certificate [{}]", n);
-                    let (_, cert) = handle_certificate(&first_intermediate_cert_file_name, data_first_intermediate_cert_file_name)?;
+                    let (_, mut cert) = handle_certificate(&first_intermediate_cert_file_name, data_first_intermediate_cert_file_name)?;
 
-                    if let Some(cert) = cert {
+                    if let Some(cert) = cert.take() {
 
                         // Do something with the intermediate certificate
                         // Access the fields of `cert` and perform necessary operations
@@ -984,7 +988,7 @@ impl  PrintX509Cert {
                         println!("Extensions subject key identifier: {}", cert.extensions_subject_key_identifier);
                         println!("Extensions SANS: {}", cert.extensions_subject_alternate_names);
 
-                        intermediate_cert = Option::from(cert); // Assign the value
+                        intermediate_cert = Some(cert); // Assign the value
                     }
                 }
                 Err(e) => {
