@@ -896,7 +896,7 @@ impl  PrintX509Cert {
                     //println!("Certificate [{}]", n);
                     let (cert, _) = handle_certificate(&server_cert_file_name, data_server_cert_file_name)?;
                     if let Some(cert) = cert {
-                        server_cert = Some(cert); // Assign the value
+                        server_cert = Option::from(cert); // Assign the value
                         // Do something with the server certificate
                         // Access the fields of `cert` and perform necessary operations
 
@@ -984,7 +984,7 @@ impl  PrintX509Cert {
                         println!("Extensions subject key identifier: {}", cert.extensions_subject_key_identifier);
                         println!("Extensions SANS: {}", cert.extensions_subject_alternate_names);
 
-                        intermediate_cert = Some(cert); // Assign the value
+                        intermediate_cert = Option::from(cert); // Assign the value
                     }
                 }
                 Err(e) => {
