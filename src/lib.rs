@@ -997,7 +997,7 @@ impl  PrintX509Cert {
         let intermediate_cert = intermediate_cert.expect("No intermediate certificate found"); // Unwrap the value
 
 
-        cert = Cert {
+        let cert = Cert {
             server: server_cert,
             intermediate: intermediate_cert,
         };
