@@ -884,6 +884,8 @@ impl PrintX509Cert {
             extensions_subject_alternate_names: "".to_string(),
         };
 
+        let mut server_cert: Option<Server_Cert> = None; // Initialize as None
+
 
         let server_cert_file_name: String = format!("{}_server.pem", domain).parse().unwrap();
         let data_server_cert_file_name = std::fs::read(server_cert_file_name.clone()).expect("Unable to read file");
@@ -893,10 +895,8 @@ impl PrintX509Cert {
                     let data_server_cert_file_name = &pem.contents;
                     //println!("Certificate [{}]", n);
                     let (cert, _) = handle_certificate(&server_cert_file_name, data_server_cert_file_name)?;
-                    if let Some(cert) = cert {
-                        let server_cert_value = cert;
-                        server_cert = server_cert_value;
-
+                    if let Some(cert) = cert.clone() {
+                        server_cert = Some(cert); // Assign the value
                         // Do something with the server certificate
                         // Access the fields of `cert` and perform necessary operations
 
@@ -938,6 +938,9 @@ impl PrintX509Cert {
 
         //println!("\n\nIntermediate Certificate :");
 
+        let mut intermediate_cert: Option<Intermediate_Cert> = None; // Initialize as None
+
+
         let first_intermediate_cert_file_name: String = format!("{}_intermediate1.pem", domain).parse().unwrap();
         let data_first_intermediate_cert_file_name = std::fs::read(first_intermediate_cert_file_name.clone()).expect("Unable to read file");
         for (n, pem) in Pem::iter_from_buffer(&data_first_intermediate_cert_file_name).enumerate() {
@@ -947,10 +950,7 @@ impl PrintX509Cert {
                     //println!("Certificate [{}]", n);
                     let (_, cert) = handle_certificate(&first_intermediate_cert_file_name, data_first_intermediate_cert_file_name)?;
 
-                    if let Some(cert) = cert {
-                        let intermediate_cert_value = cert;
-                        intermediate_cert = intermediate_cert_value;
-
+                    if let Some(cert) = cert.clone() {
 
                         // Do something with the intermediate certificate
                         // Access the fields of `cert` and perform necessary operations
@@ -983,6 +983,8 @@ impl PrintX509Cert {
                         println!("Extensions crl key usage: {}", cert.extensions_key_usage);
                         println!("Extensions subject key identifier: {}", cert.extensions_subject_key_identifier);
                         println!("Extensions SANS: {}", cert.extensions_subject_alternate_names);
+
+                        intermediate_cert = Some(cert); // Assign the value
                     }
                 }
                 Err(e) => {
@@ -990,6 +992,11 @@ impl PrintX509Cert {
                 }
             }
         }
+        let server_cert = server_cert.expect("No intermediate certificate found"); // Unwrap the value
+
+        let intermediate_cert = intermediate_cert.expect("No intermediate certificate found"); // Unwrap the value
+
+
         cert = Cert {
             server: server_cert,
             intermediate: intermediate_cert,
