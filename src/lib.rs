@@ -899,7 +899,7 @@ impl  PrintX509Cert {
                     let data_server_cert_file_name = &pem.contents;
                     //println!("Certificate [{}]", n);
                     let (mut cert, _) = handle_certificate(&server_cert_file_name, data_server_cert_file_name)?;
-                    if let Some(cert) = cert.replace(Default::default()) {
+                    if let Some(cert) = cert.take() {
                         server_cert = Some(cert); // Assign the value
                         // Do something with the server certificate
                         // Access the fields of `cert` and perform necessary operations
@@ -956,7 +956,7 @@ impl  PrintX509Cert {
                     //println!("Certificate [{}]", n);
                     let (_, mut cert) = handle_certificate(&first_intermediate_cert_file_name, data_first_intermediate_cert_file_name)?;
 
-                    if let Some(cert) = cert.replace(Default::default()) {
+                    if let Some(cert) = cert.take() {
 
                         // Do something with the intermediate certificate
                         // Access the fields of `cert` and perform necessary operations
