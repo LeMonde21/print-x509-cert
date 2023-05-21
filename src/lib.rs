@@ -899,11 +899,11 @@ impl  PrintX509Cert {
                     let data_server_cert_file_name = &pem.contents;
                     //println!("Certificate [{}]", n);
                     let (mut cert, _) = handle_certificate(&server_cert_file_name, data_server_cert_file_name)?;
-                    if let Some(cert) = cert.take() {
+                    if let Some(cert) = cert.replace(Default::default()) {
                         server_cert = Some(cert); // Assign the value
                         // Do something with the server certificate
                         // Access the fields of `cert` and perform necessary operations
-
+/*
                         println!("Subject Country: {}", cert.subject_country);
                         println!("Subject State: {}", cert.subject_state);
                         println!("Subject Locality: {}", cert.subject_locality);
@@ -932,6 +932,8 @@ impl  PrintX509Cert {
                         println!("Extensions crl key usage: {}", cert.extensions_key_usage);
                         println!("Extensions subject key identifier: {}", cert.extensions_subject_key_identifier);
                         println!("Extensions SANS: {}", cert.extensions_subject_alternate_names);
+
+ */
                     }
                 }
                 Err(e) => {
@@ -954,10 +956,11 @@ impl  PrintX509Cert {
                     //println!("Certificate [{}]", n);
                     let (_, mut cert) = handle_certificate(&first_intermediate_cert_file_name, data_first_intermediate_cert_file_name)?;
 
-                    if let Some(cert) = cert.take() {
+                    if let Some(cert) = cert.replace(Default::default()) {
 
                         // Do something with the intermediate certificate
                         // Access the fields of `cert` and perform necessary operations
+                        /*
 
                         println!("Subject Country: {}", cert.subject_country);
                         println!("Subject State: {}", cert.subject_state);
@@ -987,6 +990,8 @@ impl  PrintX509Cert {
                         println!("Extensions crl key usage: {}", cert.extensions_key_usage);
                         println!("Extensions subject key identifier: {}", cert.extensions_subject_key_identifier);
                         println!("Extensions SANS: {}", cert.extensions_subject_alternate_names);
+
+                         */
 
                         intermediate_cert = Some(cert); // Assign the value
                     }
