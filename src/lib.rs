@@ -822,10 +822,67 @@ impl PrintX509Cert {
 
         //println!("Server Certificate :");
 
-
         // Define the variables before the blocks
-        let mut server_cert: Option<ServerCert> = None;
-        let mut intermediate_cert: Option<IntermediateCert> = None;
+        let mut server_cert: ServerCert = ServerCert {
+            subject_country: "".to_string(),
+            subject_state: "".to_string(),
+            subject_locality: "".to_string(),
+            subject_organization: "".to_string(),
+            subject_common_name: "".to_string(),
+            issuer_country: "".to_string(),
+            issuer_state: "".to_string(),
+            issuer_locality: "".to_string(),
+            issuer_organization: "".to_string(),
+            issuer_common_name: "".to_string(),
+            not_before: Default::default(),
+            not_after: Default::default(),
+            is_valid: false,
+            pki_algorithm_oid: "".to_string(),
+            pki_algorithm_bytes: "".to_string(),
+            pki_algorithm_exponent: "".to_string(),
+            signature_algorithm: "".to_string(),
+            signature_value: "".to_string(),
+            extensions_authority_key_identifier: "".to_string(),
+            extensions_authority_key_cert_issuer: "".to_string(),
+            extensions_authority_key_cert_serial: "".to_string(),
+            extensions_basic_constraints: "".to_string(),
+            extensions_crl_full_name: "".to_string(),
+            extensions_crl_reasons: "".to_string(),
+            extensions_crl_issuer: "".to_string(),
+            extensions_key_usage: "".to_string(),
+            extensions_subject_key_identifier: "".to_string(),
+            extensions_subject_alternate_names: "".to_string(),
+        };
+        let mut intermediate_cert: IntermediateCert = IntermediateCert {
+            subject_country: "".to_string(),
+            subject_state: "".to_string(),
+            subject_locality: "".to_string(),
+            subject_organization: "".to_string(),
+            subject_common_name: "".to_string(),
+            issuer_country: "".to_string(),
+            issuer_state: "".to_string(),
+            issuer_locality: "".to_string(),
+            issuer_organization: "".to_string(),
+            issuer_common_name: "".to_string(),
+            not_before: Default::default(),
+            not_after: Default::default(),
+            is_valid: false,
+            pki_algorithm_oid: "".to_string(),
+            pki_algorithm_bytes: "".to_string(),
+            pki_algorithm_exponent: "".to_string(),
+            signature_algorithm: "".to_string(),
+            signature_value: "".to_string(),
+            extensions_authority_key_identifier: "".to_string(),
+            extensions_authority_key_cert_issuer: "".to_string(),
+            extensions_authority_key_cert_serial: "".to_string(),
+            extensions_basic_constraints: "".to_string(),
+            extensions_crl_full_name: "".to_string(),
+            extensions_crl_reasons: "".to_string(),
+            extensions_crl_issuer: "".to_string(),
+            extensions_key_usage: "".to_string(),
+            extensions_subject_key_identifier: "".to_string(),
+            extensions_subject_alternate_names: "".to_string(),
+        };
 
 
         let server_cert_file_name: String = format!("{}_server.pem", domain).parse().unwrap();
@@ -838,7 +895,7 @@ impl PrintX509Cert {
                     let (cert, _) = handle_certificate(&server_cert_file_name, data_server_cert_file_name)?;
                     if let Some(cert) = cert {
                         let server_cert_value = cert;
-                        server_cert = Some(server_cert_value);
+                        server_cert = server_cert_value;
 
                         // Do something with the server certificate
                         // Access the fields of `cert` and perform necessary operations
@@ -892,7 +949,7 @@ impl PrintX509Cert {
 
                     if let Some(cert) = cert {
                         let intermediate_cert_value = cert;
-                        intermediate_cert = Some(intermediate_cert_value);
+                        intermediate_cert = intermediate_cert_value;
 
 
                         // Do something with the intermediate certificate
@@ -933,9 +990,9 @@ impl PrintX509Cert {
                 }
             }
         }
-        let cert = Cert {
-            server: server_cert.unwrap(),
-            intermediate: intermediate_cert.unwrap(),
+        cert = Cert {
+            server: server_cert,
+            intermediate: intermediate_cert,
         };
 
         Ok(cert)
