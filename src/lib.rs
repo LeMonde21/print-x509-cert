@@ -520,8 +520,8 @@ fn handle_certificate(file_name: &str, data: &[u8]) -> io::Result<(Option<Server
                 }
             }
 
-            let not_before = Utc.timestamp(x509.validity().not_before.timestamp(), 0);
-            let not_after = Utc.timestamp(x509.validity().not_after.timestamp(), 0);
+            let not_before = Utc.timestamp(x509.validity().not_before.timestamp(), 0).to_string();
+            let not_after = Utc.timestamp(x509.validity().not_after.timestamp(), 0).to_string();
             let is_valid = x509.validity().is_valid();
 
 
@@ -703,8 +703,8 @@ fn handle_certificate(file_name: &str, data: &[u8]) -> io::Result<(Option<Server
                     issuer_locality: issuer_locality,
                     issuer_organization: issuer_organization,
                     issuer_common_name: issuer_common_name,
-                    not_before: not_before,
-                    not_after: not_after,
+                    not_before: not_before.parse().unwrap(),
+                    not_after: not_after.parse().unwrap(),
                     is_valid: is_valid,
                     pki_algorithm_oid: pki_algorithm_oid,
                     pki_algorithm_bytes: pki_algorithm_bytes,
@@ -735,8 +735,8 @@ fn handle_certificate(file_name: &str, data: &[u8]) -> io::Result<(Option<Server
                     issuer_locality: issuer_locality,
                     issuer_organization: issuer_organization,
                     issuer_common_name: issuer_common_name,
-                    not_before: not_before,
-                    not_after: not_after,
+                    not_before: not_before.parse().unwrap(),
+                    not_after: not_after.parse().unwrap(),
                     is_valid: is_valid,
                     pki_algorithm_oid: pki_algorithm_oid,
                     pki_algorithm_bytes: pki_algorithm_bytes,
