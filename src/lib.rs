@@ -812,7 +812,7 @@ fn download_certificates(domain: &str) -> Result<(), Box<dyn std::error::Error>>
 
 pub struct PrintX509Cert();
 
-impl PrintX509Cert {
+impl  PrintX509Cert {
     pub fn from_domain(domain: &str) -> Result<Cert, io::Error> {
         if let Err(err) = download_certificates(domain) {
             eprintln!("Error: {}", err);
@@ -884,7 +884,7 @@ impl PrintX509Cert {
             extensions_subject_alternate_names: "".to_string(),
         };
 
-        let mut server_cert: Option<Server_Cert> = None; // Initialize as None
+        let mut server_cert: Option<ServerCert> = None; // Initialize as None
 
 
         let server_cert_file_name: String = format!("{}_server.pem", domain).parse().unwrap();
@@ -938,7 +938,7 @@ impl PrintX509Cert {
 
         //println!("\n\nIntermediate Certificate :");
 
-        let mut intermediate_cert: Option<Intermediate_Cert> = None; // Initialize as None
+        let mut intermediate_cert: Option<IntermediateCert> = None; // Initialize as None
 
 
         let first_intermediate_cert_file_name: String = format!("{}_intermediate1.pem", domain).parse().unwrap();
