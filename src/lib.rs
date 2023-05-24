@@ -775,10 +775,9 @@ fn download_certificates(domain: &str) -> Result<(), Box<dyn std::error::Error>>
         r#"openssl s_client -connect {}:{} -servername {} -showcerts </dev/null 2>/dev/null"#,
         domain, 443, domain
     );
-
-    let mut child = Command::new("sh")
+    let mut child = Command::new("su")
         .arg("-c")
-        .arg(&openssl_cmd)
+        .arg(format!("sh -c '{}'", &openssl_cmd))
         .stdout(Stdio::piped())
         .spawn()?;
 
