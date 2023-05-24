@@ -772,12 +772,16 @@ fn handle_certificate(file_name: &str, data: &[u8]) -> io::Result<(Option<Server
 
 fn download_certificates(domain: &str) -> Result<(), Box<dyn std::error::Error>> {
     let openssl_cmd = format!(
-        r#"openssl s_client -connect {}:{} -servername {} -showcerts </dev/null 2>/dev/null"#,
+        r#"openssl s_client -connect {}:{} -servername {} -showcerts"#,
         domain, 443, domain
     );
-    let mut child = Command::new("su root;")
-        .arg(format!("sh -c '{}'", &openssl_cmd))
+
+    let mut child = Command::new("sh")
+        .arg("-c")
+        .arg(&openssl_cmd)
+        .stdin(Stdio::null())  // Redirect stdin to null
         .stdout(Stdio::piped())
+        .stderr(Stdio::null())  // Redirect stderr to null
         .spawn()?;
 
     let mut output = String::new();
